@@ -1,1 +1,1 @@
-``Telegram Broswer lets you browse public telegram without login to your account
+Telegram Broswer lets you browse public telegram without login to your account
