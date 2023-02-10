@@ -1,7 +1,7 @@
 "use client";
 import { nformatter } from "@/scripts/helper";
 import Cookies from "js-cookie";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 class Printcards extends React.Component {
   scrollPos = 0;
@@ -11,12 +11,26 @@ class Printcards extends React.Component {
       chats: [],
       darkMode: Cookies.get("darkMode"),
       currentChat: "",
+      chatCategory: 0,
+      chatLanguage: "en",
     };
   }
 
   componentDidMount() {
     this.fetchChats();
     window.addEventListener("scroll", this.handleScrollEffects);
+
+    const categories = document.getElementById("categoriesDropdown");
+    categories.addEventListener("change", () => {
+      this.setState({ chatCategory: categories.value });
+      this.fetchChats(categories.value);
+    });
+
+    const language = document.getElementById("languageDropdown");
+    language.addEventListener("change", () => {
+      this.setState({ chatLanguage: language.value });
+      this.fetchChats(this.state.chatCategory, language.value);
+    });
   }
 
   /**
@@ -35,12 +49,16 @@ class Printcards extends React.Component {
     return script;
   }
 
-  fetchChats() {
+  fetchChats(
+    category = this.state.chatCategory,
+    language = this.state.chatLanguage
+  ) {
     if (this.state.chats.length == 0) {
-      fetch("api/chat")
+      fetch("api/chat?category=" + category + "&language=" + language)
         .then((response) => response.json())
         .then((chats) => {
           this.setState({ chats: chats });
+          this.updateChatList(chats);
         });
     }
   }
@@ -103,6 +121,15 @@ class Printcards extends React.Component {
     );
   };
 
+  updateChatList = (chats) => {
+    const chatListCard = document.getElementById("chatList");
+    if (chatListCard) {
+      let chatList = "";
+      chats.map((chat) => (chatList += `<li>${chat.title}</li>`));
+      chatListCard.innerHTML = chatList;
+    }
+  };
+
   updateFeed = (chats) => {
     const feed = document.querySelector("main div#feed");
     if (feed) {
@@ -131,6 +158,7 @@ class Printcards extends React.Component {
       }
 
       chats.map((chat) => {
+        //set chat details card
         if (
           document.querySelector("div#chatDetailsCard h3").textContent == ""
         ) {
@@ -158,7 +186,6 @@ class Printcards extends React.Component {
     if (typeof document !== "undefined") {
       this.updateFeed(this.state.chats);
     }
-
     return <></>;
   };
 }
