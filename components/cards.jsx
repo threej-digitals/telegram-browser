@@ -5,14 +5,19 @@ import React from "react";
 
 class Printcards extends React.Component {
   scrollPos = 0;
+  chatCategory = 28;
+  chatLanguage = "en";
+
+  promotedChats = [];
+
+  promotedChatsList = [];
+
   constructor(props) {
     super(props);
     this.state = {
       chats: [],
       darkMode: Cookies.get("darkMode"),
       currentChat: "",
-      chatCategory: 0,
-      chatLanguage: "en",
     };
   }
 
@@ -22,15 +27,21 @@ class Printcards extends React.Component {
 
     const categories = document.getElementById("categoriesDropdown");
     categories.addEventListener("change", () => {
-      this.setState({ chatCategory: categories.value });
+      document.querySelector("div#feed").innerHTML = "";
+      this.chatCategory = categories.value;
       this.fetchChats(categories.value);
     });
 
     const language = document.getElementById("languageDropdown");
     language.addEventListener("change", () => {
-      this.setState({ chatLanguage: language.value });
-      this.fetchChats(this.state.chatCategory, language.value);
+      document.querySelector("div#feed").innerHTML = "";
+      this.chatLanguage = language.value;
+      this.fetchChats(this.chatCategory, language.value);
     });
+
+    document
+      .querySelector("button#loadMorePost")
+      ?.addEventListener("click", this.modifyChatsState);
   }
 
   /**
@@ -49,18 +60,14 @@ class Printcards extends React.Component {
     return script;
   }
 
-  fetchChats(
-    category = this.state.chatCategory,
-    language = this.state.chatLanguage
-  ) {
-    if (this.state.chats.length == 0) {
-      fetch("api/chat?category=" + category + "&language=" + language)
-        .then((response) => response.json())
-        .then((chats) => {
-          this.setState({ chats: chats });
-          this.updateChatList(chats);
-        });
-    }
+  fetchChats(category = this.chatCategory, language = this.chatLanguage) {
+    fetch("api/chat?category=" + category + "&language=" + language)
+      .then((response) => response.json())
+      .then((chats) => {
+        chats = [...this.promotedChats, ...chats];
+        this.setState({ chats: chats });
+        this.updateChatList(chats);
+      });
   }
 
   handleScrollEffects = () => {
@@ -89,17 +96,25 @@ class Printcards extends React.Component {
       });
 
       //load more posts
-      let lastPostPos = document
-        .querySelector("div#feed div:last-child")
-        .getBoundingClientRect();
-      if (lastPostPos.top < 1000) {
-        let chats = this.state.chats;
-        chats.map((chat) => chat.lastPostId--);
-        this.setState({ chats: chats });
+      const lastPost = document.querySelector("div#feed div:last-child");
+      if (lastPost) {
+        const lastPostPos = lastPost.getBoundingClientRect();
+        if (lastPostPos.top < 1000) {
+          this.modifyChatsState();
+        }
       }
 
       this.scrollPos = main.top;
     }
+  };
+
+  modifyChatsState = () => {
+    let chats = this.state.chats;
+    chats = chats.filter(
+      (chat) => !this.promotedChatsList.includes(chat.username)
+    );
+    chats.map((chat) => chat.lastPostId--);
+    this.setState({ chats: chats });
   };
 
   setChatDetails = (chat) => {
@@ -125,13 +140,15 @@ class Printcards extends React.Component {
     const chatListCard = document.getElementById("chatList");
     if (chatListCard) {
       let chatList = "";
-      chats.map((chat) => (chatList += `<li>${chat.title}</li>`));
+      chats.map(
+        (chat) => (chatList += chat.title ? `<li>${chat.title}</li>` : "")
+      );
       chatListCard.innerHTML = chatList;
     }
   };
 
   updateFeed = (chats) => {
-    const feed = document.querySelector("main div#feed");
+    const feed = document.querySelector("div#feed");
     if (feed) {
       const cardAttrib = [
         {

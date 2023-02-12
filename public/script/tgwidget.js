@@ -158,7 +158,7 @@
         ];
         defWidth = widgetEl.getAttribute("data-width") || "100%";
         defHeight = "";
-        styles.minWidth = "320px";
+        styles.minWidth = "280px";
       } else if (
         (widgetId = widgetEl.getAttribute("data-telegram-discussion"))
       ) {
@@ -194,7 +194,7 @@
         ];
         defWidth = widgetEl.getAttribute("data-width") || "100%";
         defHeight = widgetEl.getAttribute("data-height") || 0;
-        styles.minWidth = "320px";
+        styles.minWidth = "280px";
         if (defHeight > 0) {
           scrollable = true;
         }
@@ -385,6 +385,9 @@
       }
       widgetEl._iframe = iframe;
       addEvent(iframe, "load", function () {
+        iframe.getBoundingClientRect().height < 60
+          ? (iframe.outerHTML = "")
+          : "";
         removeEvent(iframe, "load", visibilityHandler);
         addEvent(window, "scroll", visibilityHandler);
         addEvent(window, "resize", visibilityHandler);

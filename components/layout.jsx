@@ -1,7 +1,6 @@
 import { cookies } from "next/headers";
-import "./globals.css";
 
-export default async function RootLayout({ children }) {
+export default async function Layout({ children }) {
   return (
     <html
       lang="en"

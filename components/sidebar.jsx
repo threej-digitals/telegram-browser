@@ -28,7 +28,7 @@ export default function Sidebar(props) {
 
   function ChatList() {
     return (
-      <div className="dark:text-white bg-gray-900 rounded p-2">
+      <div className="dark:text-white bg-gray-200 dark:bg-gray-900 rounded p-2">
         <p className=" text-gray-400" style={{ fontSize: "13px" }}>
           chat list
         </p>
@@ -45,12 +45,10 @@ export default function Sidebar(props) {
         <label className="relative inline-flex cursor-pointer">
           <input
             type="checkbox"
-            value=""
             className="sr-only peer"
-            onChange={() => {
-              toggleDarkMode();
-            }}
+            onClick={toggleDarkMode}
             checked={darkMode == "on" ? true : false}
+            readOnly
           />
           <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
           <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
@@ -81,17 +79,19 @@ export default function Sidebar(props) {
 
   function MobileHeader() {
     return (
-      <div className="fixed top-0 w-full flex flex-column align-middle z-50 sm:hidden py-2 px-4 bg-gray-100 dark:bg-gray-800">
+      <div className="fixed top-0 items-center justify-between w-full flex flex-column z-50 sm:hidden py-2 px-4 bg-gray-300 dark:bg-gray-700">
         <Image
-          className="rounded-md"
+          className="rounded"
           src={"/favicon.png"}
-          width={50}
-          height={50}
+          width={45}
+          height={45}
           alt="Telegram browser logo"
         ></Image>
-        <span className="ml-3 dark:text-white text-2xl">Telegram Browser</span>
+        <span className="dark:text-white font-bold text-xl">
+          Telegram Browser
+        </span>
         <button
-          className="absolute right-2 dark:text-white rotate-90 p-2 rounded"
+          className="dark:text-white w-7 h-7 p-1 bg-slate-400 dark:bg-gray-800 rounded-sm"
           onClick={() => {
             let aside = document.querySelector("aside");
             aside.classList.contains("hidden")
@@ -99,13 +99,14 @@ export default function Sidebar(props) {
               : aside.classList.add("hidden");
           }}
         >
-          |||
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAABN0lEQVR4nO2YwUkEQRBFH+LBgxEIXoxAw/AgRqIBTDeMixHowembKQiCYWgEXgQD0O1ZVkRKVpa9OMKOTnf1SD2o8/ziF49mwDAMozik4Vwa3iQgRUzzlWXSZ4FX9dDh27ysv0BgIoF5AaFlOXNpOOt9StFz2XpEc6LnonfwVRM1G9Fzo7aA405qNn+9wHKJ7dbzoBD+fvFthqCt2Ymep2xn43ieOXYZkug5iI5phvDTWLE/aPjVEhWH0fGeMPxHW3FMStqK04R3f0IOUug1/kWX6np1A+hSTa9uQF3m1mtMoctcek2qy9R6zaLLpHrNpcu+rPs8plTEFlDGGtDGGtDGGtDGGtDGGtDGGhhBA48SOKJU5Ofgs8Xvcblmi5KR7vC3csUeY0DGdC5djOpcuhjVuRjGP+ET+40TJj+/lmAAAAAASUVORK5CYII=" />
         </button>
       </div>
     );
   }
 
   const toggleDarkMode = () => {
+    console.log(darkMode);
     if (darkMode == "on") {
       Cookies.set("darkMode", "off");
       setDarkMode("off");
@@ -121,10 +122,10 @@ export default function Sidebar(props) {
     <>
       <MobileHeader />
       <aside
-        className="fixed sm:sticky sm:bottom-0 top-0 left-0 w-full sm:w-1/4 hidden sm:flex flex-col justify-between min-h-screen h-full bg-gray-100 dark:bg-gray-800 ease-in duration-500"
+        className="fixed sm:sticky bottom-0 top-0 left-0 w-full md:w-1/4 flex hidden sm:flex flex-col justify-between min-h-screen h-full bg-gray-100 dark:bg-gray-800 ease-in duration-500"
         aria-label="Sidebar"
       >
-        <div className="px-3 pt-2 overflow-y-auto">
+        <div className="px-3 pt-8 sm:pt-2 overflow-y-auto">
           <ul className="space-y-2 hidden md:block">
             <li>
               <span className="flex text-base font-serif font-semibold text-gray-900 transition duration-75 rounded-lg dark:text-white group">

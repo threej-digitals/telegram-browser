@@ -1,4 +1,4 @@
-export default function Head(req) {
+export default function Header(req) {
   return (
     <>
       <title>Telegram browser</title>
@@ -8,11 +8,6 @@ export default function Head(req) {
         content="Browse public telegram channels as feed"
       />
       <link rel="icon" href="/favicon.png" />
-      {/* <link
-        href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.2/flowbite.min.css"
-        rel="stylesheet"
-        precedence="default"
-      /> */}
     </>
   );
 }

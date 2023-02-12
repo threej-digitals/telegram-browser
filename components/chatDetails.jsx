@@ -1,3 +1,5 @@
+import Button from "./button";
+
 export default function ChatDetailsCard() {
   return (
     <div
@@ -22,9 +24,7 @@ export default function ChatDetailsCard() {
         ))}
       </div>
       <div className="description text-sm break-words max-h-52 overflow-y-scroll"></div>
-      <button className="rounded px-10 py-1 bg-sky-500 text-white text-sm hover:bg-sky-400">
-        SUBSCRIBE
-      </button>
+      <Button text="SUBSCRIBE" style={{ width: "100%" }} />
     </div>
   );
 }
