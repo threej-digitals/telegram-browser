@@ -7,9 +7,7 @@ export default function ChatDetailsCard() {
       id="chatDetailsCard"
     >
       <div className="info flex flex-row">
-        <other data="favicon.png" className="rounded-full w-1/3">
-          <img src="favicon.png" alt="" className="rounded-full w-16" />
-        </other>
+        <img src="favicon.png" alt="" className="rounded-full w-16" />
         <div className="flex flex-col justify-center text-left ml-2 w-2/3 overflow-auto whitespace-nowrap">
           <h3></h3>
           <h5 className="text-xs text-sky-500"></h5>

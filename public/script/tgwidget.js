@@ -385,7 +385,7 @@
       }
       widgetEl._iframe = iframe;
       addEvent(iframe, "load", function () {
-        iframe.getBoundingClientRect().height < 60
+        iframe.getBoundingClientRect().height < 90
           ? (iframe.outerHTML = "")
           : "";
         removeEvent(iframe, "load", visibilityHandler);

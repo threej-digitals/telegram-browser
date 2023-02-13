@@ -7,7 +7,8 @@ export default function Header(req) {
         name="description"
         content="Browse public telegram channels as feed"
       />
-      <link rel="icon" href="/favicon.png" />
+      <link rel="icon" href="favicon.png" />
+      <script src="/telegram-browser/script/matomoTracker.js"></script>
     </>
   );
 }

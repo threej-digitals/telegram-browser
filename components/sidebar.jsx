@@ -13,6 +13,8 @@ export default function Sidebar(props) {
       <select
         className="w-full bg-transparent dark:bg-gray-800 dark:text-white py-2 cursor-pointer border-b border-gray-500 focus:outline-none"
         id="categoriesDropdown"
+        value={Cookies.get("chatCategory")}
+        onChange={() => {}}
       >
         <option value="category">🧩 Category</option>
         {chatCategories.map((cat, i) => {
@@ -28,12 +30,13 @@ export default function Sidebar(props) {
 
   function ChatList() {
     return (
-      <div className="dark:text-white bg-gray-200 dark:bg-gray-900 rounded p-2">
-        <p className=" text-gray-400" style={{ fontSize: "13px" }}>
-          chat list
-        </p>
+      <div
+        id="chatList"
+        className="dark:text-white bg-gray-200 dark:bg-gray-900 rounded p-2"
+      >
+        <p className=" text-gray-400" style={{ fontSize: "13px" }}></p>
         <div className=" max-h-48 overflow-y-scroll">
-          <ul id="chatList"></ul>
+          <ul></ul>
         </div>
       </div>
     );
@@ -64,6 +67,8 @@ export default function Sidebar(props) {
       <select
         className="w-full bg-transparent dark:bg-gray-800 dark:text-white py-2 cursor-pointer border-b border-gray-500 focus:outline-none"
         id="languageDropdown"
+        value={Cookies.get("chatLanguage")}
+        onChange={() => {}}
       >
         <option value="">🌎 Language</option>
         {chatLangauges.map((lang) => {
@@ -82,7 +87,7 @@ export default function Sidebar(props) {
       <div className="fixed top-0 items-center justify-between w-full flex flex-column z-50 sm:hidden py-2 px-4 bg-gray-300 dark:bg-gray-700">
         <Image
           className="rounded"
-          src={"/favicon.png"}
+          src={"/telegram-browser/favicon.png"}
           width={45}
           height={45}
           alt="Telegram browser logo"
@@ -106,7 +111,6 @@ export default function Sidebar(props) {
   }
 
   const toggleDarkMode = () => {
-    console.log(darkMode);
     if (darkMode == "on") {
       Cookies.set("darkMode", "off");
       setDarkMode("off");
@@ -129,13 +133,6 @@ export default function Sidebar(props) {
           <ul className="space-y-2 hidden md:block">
             <li>
               <span className="flex text-base font-serif font-semibold text-gray-900 transition duration-75 rounded-lg dark:text-white group">
-                <Image
-                  className="hidden rounded-md ml-3"
-                  src={"/favicon.png"}
-                  width={60}
-                  height={60}
-                  alt="Telegram browser logo"
-                ></Image>
                 <h1 className="ml-2 mt-2">Telegram Browser</h1>
               </span>
             </li>

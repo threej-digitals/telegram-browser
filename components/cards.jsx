@@ -5,8 +5,9 @@ import React from "react";
 
 class Printcards extends React.Component {
   scrollPos = 0;
-  chatCategory = 28;
-  chatLanguage = "en";
+  chatCategory = Cookies.get("chatCategory") || 28;
+  chatLanguage = Cookies.get("chatLanguage") || "en";
+  chatLimit = 20;
 
   promotedChats = [];
 
@@ -29,6 +30,7 @@ class Printcards extends React.Component {
     categories.addEventListener("change", () => {
       document.querySelector("div#feed").innerHTML = "";
       this.chatCategory = categories.value;
+      Cookies.set("chatCategory", categories.value);
       this.fetchChats(categories.value);
     });
 
@@ -36,6 +38,7 @@ class Printcards extends React.Component {
     language.addEventListener("change", () => {
       document.querySelector("div#feed").innerHTML = "";
       this.chatLanguage = language.value;
+      Cookies.set("chatLanguage", language.value);
       this.fetchChats(this.chatCategory, language.value);
     });
 
@@ -60,12 +63,24 @@ class Printcards extends React.Component {
     return script;
   }
 
-  fetchChats(category = this.chatCategory, language = this.chatLanguage) {
-    fetch("api/chat?category=" + category + "&language=" + language)
+  fetchChats(
+    category = this.chatCategory,
+    language = this.chatLanguage,
+    limit = this.chatLimit
+  ) {
+    fetch(
+      "api/chat?category=" +
+        category +
+        "&language=" +
+        language +
+        "&limit=" +
+        limit
+    )
       .then((response) => response.json())
       .then((chats) => {
         chats = [...this.promotedChats, ...chats];
         this.setState({ chats: chats });
+        this.chatLimit = chats.length;
         this.updateChatList(chats);
       });
   }
@@ -119,7 +134,10 @@ class Printcards extends React.Component {
 
   setChatDetails = (chat) => {
     const el = document.querySelector("div#chatDetailsCard");
-    el.querySelector("other").setAttribute("data", chat.photo);
+    el.querySelector("img").setAttribute(
+      "src",
+      "https://threej.in/" + chat.photo
+    );
     el.querySelector("h3").innerText = chat.title;
     el.querySelector(
       "h5"
@@ -143,7 +161,16 @@ class Printcards extends React.Component {
       chats.map(
         (chat) => (chatList += chat.title ? `<li>${chat.title}</li>` : "")
       );
-      chatListCard.innerHTML = chatList;
+      chatListCard.querySelector("ul").innerHTML = chatList;
+
+      const CategoryDropdown = document.querySelector(
+        "select#categoriesDropdown"
+      );
+      chatListCard.querySelector("p").innerText = `showing top ${
+        this.chatLimit
+      } ${
+        CategoryDropdown.options[CategoryDropdown.options.selectedIndex].text
+      } channels`;
     }
   };
 
