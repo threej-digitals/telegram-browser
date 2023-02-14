@@ -13,8 +13,6 @@ export default function Sidebar(props) {
       <select
         className="w-full bg-transparent dark:bg-gray-800 dark:text-white py-2 cursor-pointer border-b border-gray-500 focus:outline-none"
         id="categoriesDropdown"
-        value={Cookies.get("chatCategory")}
-        onChange={() => {}}
       >
         <option value="category">🧩 Category</option>
         {chatCategories.map((cat, i) => {
@@ -67,8 +65,6 @@ export default function Sidebar(props) {
       <select
         className="w-full bg-transparent dark:bg-gray-800 dark:text-white py-2 cursor-pointer border-b border-gray-500 focus:outline-none"
         id="languageDropdown"
-        value={Cookies.get("chatLanguage")}
-        onChange={() => {}}
       >
         <option value="">🌎 Language</option>
         {chatLangauges.map((lang) => {

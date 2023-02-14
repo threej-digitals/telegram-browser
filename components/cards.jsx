@@ -5,7 +5,7 @@ import React from "react";
 
 class Printcards extends React.Component {
   scrollPos = 0;
-  chatCategory = Cookies.get("chatCategory") || 28;
+  chatCategory = Cookies.get("chatCategory") || 27;
   chatLanguage = Cookies.get("chatLanguage") || "en";
   chatLimit = 20;
 
@@ -17,7 +17,7 @@ class Printcards extends React.Component {
     super(props);
     this.state = {
       chats: [],
-      darkMode: Cookies.get("darkMode"),
+      darkMode: Cookies.get("darkMode") || "on",
       currentChat: "",
     };
   }
@@ -27,16 +27,20 @@ class Printcards extends React.Component {
     window.addEventListener("scroll", this.handleScrollEffects);
 
     const categories = document.getElementById("categoriesDropdown");
+    categories.value = this.chatCategory;
     categories.addEventListener("change", () => {
       document.querySelector("div#feed").innerHTML = "";
+      document.querySelector("div#chatDetailsCard h3").innerText = "";
       this.chatCategory = categories.value;
       Cookies.set("chatCategory", categories.value);
       this.fetchChats(categories.value);
     });
 
     const language = document.getElementById("languageDropdown");
+    language.value = this.chatLanguage;
     language.addEventListener("change", () => {
       document.querySelector("div#feed").innerHTML = "";
+      document.querySelector("div#chatDetailsCard h3").innerText = "";
       this.chatLanguage = language.value;
       Cookies.set("chatLanguage", language.value);
       this.fetchChats(this.chatCategory, language.value);

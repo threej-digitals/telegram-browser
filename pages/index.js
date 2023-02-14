@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import { useEffect } from "react";
 import Button from "@/components/button";
 
-const darkMode = Cookies.get("darkMode") || "";
+const darkMode = Cookies.get("darkMode") || "on";
 
 export default function Home() {
   useEffect(() => {

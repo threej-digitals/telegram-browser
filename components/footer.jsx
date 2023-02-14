@@ -13,7 +13,9 @@ export default function Footer() {
         · <a href="https://t.me/threej_discuss">Support</a>
       </p>
       <br />
-      <p>&copy; {new Date().getFullYear()} ThreeJ</p>
+      <p>
+        &copy; {new Date().getFullYear()} <a href="https://threej.in">ThreeJ</a>
+      </p>
     </footer>
   );
 }
