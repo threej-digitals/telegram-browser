@@ -29,6 +29,7 @@ class Printcards extends React.Component {
     const categories = document.getElementById("categoriesDropdown");
     categories.value = this.chatCategory;
     categories.addEventListener("change", () => {
+      window.scrollTo(0, 0);
       document.querySelector("div#feed").innerHTML = "";
       document.querySelector("div#chatDetailsCard h3").innerText = "";
       this.chatCategory = categories.value;
@@ -39,6 +40,7 @@ class Printcards extends React.Component {
     const language = document.getElementById("languageDropdown");
     language.value = this.chatLanguage;
     language.addEventListener("change", () => {
+      window.scrollTo(0, 0);
       document.querySelector("div#feed").innerHTML = "";
       document.querySelector("div#chatDetailsCard h3").innerText = "";
       this.chatLanguage = language.value;

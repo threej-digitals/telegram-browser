@@ -16,7 +16,7 @@ export default function Home() {
     <>
       <div className="flex dark:bg-gray-900 w-full">
         <Sidebar darkMode={darkMode} />
-        <main className=" min-h-screen sm:flex w-full mt-20 sm:mt-4 px-4">
+        <main className=" min-h-screen sm:flex sm:w-[77%] w-full mt-20 sm:mt-4 px-4">
           <div className="w-full sm:w-[60%] flex flex-col">
             <div id="feed">
               <Printcards />
