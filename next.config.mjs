@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
-  reactStrictMode: false,
+  reactStrictMode: true,
   basePath: "/telegram-browser",
   trailingSlash: true,
 };

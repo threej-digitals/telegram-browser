@@ -7,10 +7,16 @@ export default function Footer() {
       <p>
         <a href="https://threej.in/about">About</a> ·{" "}
         <a href="https://threej.in/advertise">Ads</a> ·{" "}
-        <a href="https://github.com/threej-digitals/telegram-browser">
+        <a
+          href="https://github.com/threej-digitals/telegram-browser"
+          target="_blank"
+        >
           Contribute
         </a>{" "}
-        · <a href="https://t.me/threej_discuss">Support</a>
+        ·{" "}
+        <a href="https://tx.me/threej_discuss" target="_blank">
+          Support
+        </a>
       </p>
       <br />
       <p>

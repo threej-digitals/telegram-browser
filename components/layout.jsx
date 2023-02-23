@@ -1,13 +1,14 @@
-import { cookies } from "next/headers";
+import LeftSidebar from "@/components/sidebar/leftSidebar";
+import RightSidebar from "./sidebar/rightSidebar";
 
-export default async function Layout({ children }) {
+export default function Layout({ children }) {
   return (
-    <html
-      lang="en"
-      className={(cookies().get("darkMode").value || "") == "on" ? "dark" : ""}
-    >
-      <head />
-      <body className="flex dark:bg-gray-900 justify-around ">{children}</body>
-    </html>
+    <>
+      <div className="grid grid-cols-4 gap-2 dark:bg-gray-900 w-full">
+        <LeftSidebar />
+        {children}
+        <RightSidebar />
+      </div>
+    </>
   );
 }
