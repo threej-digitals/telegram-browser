@@ -21,7 +21,7 @@ const chatStruct = {
 };
 
 export default function ChatContextProvider({ children, cookies }) {
-  var chatLimit = 20;
+  var chatLimit = cookies.chatLimit || 20;
   const promotedChats = [chatStruct];
   const promotedChatsList = ["threej_in"];
 
@@ -83,6 +83,7 @@ export default function ChatContextProvider({ children, cookies }) {
         modifyChatsState,
         exclusionList,
         updateExclusionList,
+        chatLimit,
       }}
     >
       {children}

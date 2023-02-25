@@ -9,12 +9,15 @@ export default function ChatList() {
     let exList = [...chatContext.exclusionList];
     if (checked) {
       exList = exList.filter((e) => e != username);
+      document
+        .querySelectorAll("div[data-username=" + username + "]")
+        .forEach((div) => div.classList.remove("hidden"));
     } else {
       //add chat to exclusion list and also remove the printed chats
       exList.push(username);
       document
         .querySelectorAll("div[data-username=" + username + "]")
-        .forEach((div) => (div.outerHTML = ""));
+        .forEach((div) => div.classList.add("hidden"));
     }
     Cookies.set("exclusionList", JSON.stringify(exList));
     chatContext.updateExclusionList(exList);
@@ -40,7 +43,14 @@ export default function ChatList() {
               key={chat.username + chat.lastPostId}
             >
               <p>
-                {i + 1}. {chat.title}
+                {i + 1}.{" "}
+                <a
+                  href={
+                    "/tg?tgcontentid=" + chat.id + "&username=" + chat.username
+                  }
+                >
+                  {chat.title}
+                </a>
               </p>
               <label className="relative inline-flex cursor-pointer">
                 <input
@@ -56,7 +66,7 @@ export default function ChatList() {
                       : true
                   }
                 />
-                <div className="w-7 h-3 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                <div className="w-6 h-3 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
               </label>
             </li>
           ))}

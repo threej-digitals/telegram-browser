@@ -117,8 +117,8 @@ export default function HomeFeed() {
 
   return (
     <>
-      <main className="relative left-60 min-h-screen sm:flex sm:col-span-2 w-full mt-20 sm:mt-4 px-4">
-        <div className="w-full flex flex-col">
+      <main className="relative sm:left-60 min-h-screen sm:flex sm:col-span-2 w-full mt-20 sm:mt-4 px-4">
+        <div className="w-[95%] sm:w-full flex flex-col">
           <div id="feed">.</div>
           <Button
             onClick={() => {
