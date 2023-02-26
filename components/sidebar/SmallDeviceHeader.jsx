@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function SmallDeviceHeader() {
   return (
-    <div className="fixed top-0 items-center justify-between w-full flex flex-column z-50 sm:hidden py-2 px-4 bg-gray-300 dark:bg-gray-700">
+    <div className="fixed top-0 items-center justify-between w-full flex flex-column z-20 sm:hidden py-2 px-4 bg-gray-300 dark:bg-gray-700">
       <Image
         className="rounded"
         src={"/telegram-browser/favicon.png"}

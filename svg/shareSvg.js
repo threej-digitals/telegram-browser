@@ -50,7 +50,7 @@ export default function ShareSvg({
         stroke="#323232"
         strokeWidth="2"
         strokeLinecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       />
       <path
         d="M8.70605 13.353L15 16.5"

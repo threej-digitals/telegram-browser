@@ -5,8 +5,11 @@ import ShareSvg from "@/svg/shareSvg";
 import FeedbackSvg from "@/svg/feedbackSvg";
 import BookmarkSvg from "@/svg/bookmarkSvg";
 import CopySvg from "@/svg/copySvg";
+import { useContext } from "react";
+import { GlobalContext } from "@/context/GlobalContext";
 
 export default function RightSidebar() {
+  const { location } = useContext(GlobalContext);
   return (
     <>
       <button
@@ -20,7 +23,7 @@ export default function RightSidebar() {
 
       <aside
         id="rightSidebar"
-        className="z-[100] w-full shadow-2xl lg:shadow-none shadow-slate-500 bg-slate-300 dark:bg-gray-900 fixed sm:w-[16rem] h-screen top-0 right-0 cscroll hidden lg:block px-3 py-10 overflow-y-scroll"
+        className="z-10 w-full shadow-2xl lg:shadow-none shadow-slate-500 bg-slate-300 dark:bg-gray-900 fixed sm:w-[16rem] h-screen top-0 right-0 cscroll hidden lg:block px-3 py-10 overflow-y-scroll"
       >
         {/* close button for small device */}
         <span
@@ -46,13 +49,16 @@ export default function RightSidebar() {
                 fill="yellow"
               />
             </span>
-            <div className="absolute left-2 -top-11 peer-focus:visible peer-hover:visible hover:visible invisible flex gap-2 p-2 pb-1 rounded bg-slate-200 dark:bg-slate-800">
+            <div
+              id="shareDialog"
+              className="absolute left-2 -top-11 peer-focus:visible peer-hover:visible hover:visible focus:visible invisible flex gap-2 p-2 pb-1 rounded bg-slate-200 dark:bg-slate-800"
+            >
               <SocialShareBtn
                 title="Browse public telegram channels as feed based on your prefernece without login."
-                url="https://threej.in/telegram-browser"
+                url={location.href}
                 classNames="hover:shadow-md rounded-full p-0"
                 hashtags={["telegram", "telegramChannel"]}
-                image="/favicon.png"
+                image={location.base + "/favicon.png"}
                 networks={[
                   "telegram",
                   "whatsapp",

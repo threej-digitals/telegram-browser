@@ -2,15 +2,21 @@ import { ChatContext } from "@/context/ChatContextProvider";
 import { GlobalContext } from "@/context/GlobalContext";
 import { useContext, useEffect } from "react";
 import Button from "./button";
+import NewCustomFeed from "./sidebar/newCustomFeed";
 
 export default function HomeFeed() {
   let scrollPos = 0;
   const chatContext = useContext(ChatContext);
-  const { darkMode, cookies } = useContext(GlobalContext);
+  const { darkMode, cookies, location } = useContext(GlobalContext);
 
   useEffect(() => {
     document.querySelector("div#feed").innerHTML = "";
-    chatContext.fetchChats(cookies.chatCategory, cookies.chatLanguage);
+    if (location.href.match("/feed/")) {
+      const q = new URLSearchParams(window.location.search);
+      chatContext.fetchCustomFeed(q.get("id"));
+    } else {
+      chatContext.fetchChats(cookies.chatCategory, cookies.chatLanguage);
+    }
   }, []);
 
   useEffect(() => {
@@ -51,6 +57,7 @@ export default function HomeFeed() {
     };
     window.addEventListener("scroll", handleScrollEffects);
   }, [chatContext.chats]);
+
   /**
    *
    * @param {*} src
@@ -100,7 +107,7 @@ export default function HomeFeed() {
         div.setAttribute("class", "w-full my-6");
         div.setAttribute("data-username", chat.username);
         div.appendChild(
-          createScript("script/tgwidget.js", [
+          createScript(location.base + "/script/tgwidget.js", [
             {
               key: "data-telegram-post",
               value: chat.username + "/" + chat.lastPostId,
@@ -128,6 +135,7 @@ export default function HomeFeed() {
             id="loadMorePost"
           />
         </div>
+        <NewCustomFeed />
       </main>
     </>
   );

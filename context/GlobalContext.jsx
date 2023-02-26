@@ -3,7 +3,7 @@ import ChatContextProvider from "./ChatContextProvider";
 
 export const GlobalContext = createContext();
 
-export default function GlobalContextProvider({ children, cookies }) {
+export default function GlobalContextProvider({ children, cookies, location }) {
   const [darkMode, setDarkMode] = useState(cookies.darkMode || "on");
   return (
     <GlobalContext.Provider
@@ -11,9 +11,12 @@ export default function GlobalContextProvider({ children, cookies }) {
         darkMode,
         setDarkMode,
         cookies: cookies,
+        location: location,
       }}
     >
-      <ChatContextProvider cookies={cookies}>{children}</ChatContextProvider>
+      <ChatContextProvider cookies={cookies} location={location}>
+        {children}
+      </ChatContextProvider>
     </GlobalContext.Provider>
   );
 }

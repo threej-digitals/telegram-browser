@@ -20,7 +20,7 @@ const chatStruct = {
   files: "",
 };
 
-export default function ChatContextProvider({ children, cookies }) {
+export default function ChatContextProvider({ children, cookies, location }) {
   var chatLimit = cookies.chatLimit || 20;
   const promotedChats = [chatStruct];
   const promotedChatsList = ["threej_in"];
@@ -42,21 +42,73 @@ export default function ChatContextProvider({ children, cookies }) {
     links: 0,
   });
 
+  const callFetch = (method, url, headers, body) => {
+    return new Promise((resolve, reject) => {
+      let options = {
+        headers: headers,
+        method: method,
+      };
+
+      if (method === "POST") {
+        options["body"] = JSON.stringify(body);
+      }
+      fetch(url, options)
+        .then((response) => response.json())
+        .then(async (newChatList) => {
+          setCurrentChat(newChatList[0] || currentChat);
+          newChatList = [...promotedChats, ...newChatList];
+          updateChats(newChatList);
+          chatLimit = newChatList.length;
+
+          resolve(newChatList);
+        });
+    });
+  };
+
   function fetchChats(category, language, limit = chatLimit) {
-    fetch(
-      "api/chat?category=" +
+    callfetch(
+      "GET",
+      location.base +
+        "/api/chat?category=" +
         category +
         "&language=" +
         language +
         "&limit=" +
         limit
-    )
+    );
+  }
+
+  function fetchCustomFeed(feedId) {
+    fetch(location.base + "/api/feed?id=" + feedId)
       .then((response) => response.json())
-      .then(async (newChatList) => {
-        setCurrentChat(newChatList[0] || currentChat);
-        newChatList = [...promotedChats, ...newChatList];
-        updateChats(newChatList);
-        chatLimit = newChatList.length;
+      .then(async (result) => {
+        if (result.ok) {
+          let chats = result.feeds[0].CHATS;
+
+          callFetch(
+            "POST",
+            location.base + "/api/chat",
+            {
+              "Content-Type": "application/json",
+              Accept: "*/*",
+            },
+            chats
+          ).then((newChatList) => {
+            if (newChatList.length != chats.length) {
+              callFetch(
+                "POST",
+                location.base + "/api/chat",
+                {
+                  "Content-Type": "application/json",
+                  Accept: "*/*",
+                },
+                chats
+              );
+            }
+          });
+        } else {
+          alert(result.message);
+        }
       });
   }
 
@@ -74,6 +126,7 @@ export default function ChatContextProvider({ children, cookies }) {
     <ChatContext.Provider
       value={{
         fetchChats,
+        fetchCustomFeed,
         chats,
         updateChats,
         currentChat,
