@@ -12,14 +12,20 @@ export default function ChatDetailsCard() {
       id="chatDetailsCard"
     >
       <div className="info flex flex-row">
-        <img src={chat.photo} alt="" className="rounded-full w-16" />
+        <img
+          src={"/" + chat.photo}
+          alt=""
+          className="rounded-full w-16"
+          width="4rem"
+          height="4rem"
+        />
         <div className="flex flex-col justify-center text-left ml-2 w-2/3 overflow-auto whitespace-nowrap">
           <h3>{chat.title}</h3>
-          <h5 className="text-xs text-sky-500">
+          <p className="text-xs text-sky-500">
             <a target="_blank" href={"https://telegram.me/" + chat.username}>
               @{chat.username}
             </a>
-          </h5>
+          </p>
         </div>
       </div>
       <div className="counters flex gap-3 overflow-auto">

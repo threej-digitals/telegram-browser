@@ -20,8 +20,11 @@ export default function Home({ cookies, location }) {
           index={true}
         />
         {/* matomo analytics */}
+        <Script
+          src="/telegram-browser/script/matomoTracker.js"
+          strategy="beforeInteractive"
+        />
       </Head>
-      <Script src="/telegram-browser/script/matomoTracker.js" />
 
       <GlobalContextProvider cookies={cookies} location={location}>
         <Layout>

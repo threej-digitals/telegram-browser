@@ -66,7 +66,7 @@ export default function ChatContextProvider({ children, cookies, location }) {
     });
   };
 
-  function fetchChats(category, language, limit = chatLimit) {
+  function fetchChats(category = 27, language = "en", limit = chatLimit) {
     callFetch(
       "GET",
       location.base +
