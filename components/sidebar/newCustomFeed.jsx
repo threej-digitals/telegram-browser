@@ -1,3 +1,4 @@
+import { ChatContext } from "@/context/ChatContextProvider";
 import { GlobalContext } from "@/context/GlobalContext";
 import Script from "next/script";
 import { useContext } from "react";
@@ -5,6 +6,7 @@ import Button from "../button";
 
 export default function NewCustomFeed() {
   const { cookies } = useContext(GlobalContext);
+  const { updateUserFeed } = useContext(ChatContext);
 
   async function createNewFeed(title, chats) {
     if (!cookies.telegramUser) {
@@ -32,6 +34,7 @@ export default function NewCustomFeed() {
     let result = await response.json();
     alert(result.message);
     document.querySelector("div#newCustomFeed").classList.add("hidden");
+    updateUserFeed();
   }
 
   return (

@@ -1,14 +1,20 @@
+import { GlobalContext } from "@/context/GlobalContext";
 import Image from "next/image";
+import { useContext } from "react";
 
 export default function SmallDeviceHeader() {
+  const { location } = useContext(GlobalContext);
   return (
     <div className="fixed top-0 items-center justify-between w-full flex flex-column z-20 sm:hidden py-2 px-4 bg-gray-300 dark:bg-gray-700">
       <Image
-        className="rounded"
+        className="rounded cursor-pointer"
         src={"/telegram-browser/favicon.png"}
         width={45}
         height={45}
         alt="Telegram browser logo"
+        onClick={() => {
+          window.location.href = location.base;
+        }}
       ></Image>
       <span className="dark:text-white font-bold text-xl">
         Telegram Browser

@@ -14,7 +14,11 @@ export default function RightSidebar() {
     <>
       <button
         onClick={() => {
-          document.getElementById("rightSidebar").classList.remove("hidden");
+          document
+            .getElementById("rightSidebar")
+            .classList.remove("hidden", "z-10");
+
+          document.getElementById("rightSidebar").classList.add("z-20");
         }}
         className="-rotate-90 fixed lg:hidden right-[-60px] cursor-pointer hover:shadow-lg bottom-14 rounded bg-gray-800 text-sm py-1 px-4 text-white "
       >
@@ -30,6 +34,7 @@ export default function RightSidebar() {
           className="lg:hidden cursor-pointer absolute top-0 left-2 my-2"
           onClick={(e) => {
             e.target.parentElement.classList.add("hidden");
+            e.target.parentElement.classList.remove("z-20");
           }}
         >
           ▶️

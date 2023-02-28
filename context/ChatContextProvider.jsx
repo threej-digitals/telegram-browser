@@ -30,6 +30,7 @@ export default function ChatContextProvider({ children, cookies, location }) {
   );
 
   const [chats, updateChats] = useState([chatStruct]);
+  const [userFeeds, setUserFeed] = useState([]);
 
   const [currentChat, setCurrentChat] = useState({
     photo: "favicon.png",
@@ -66,7 +67,7 @@ export default function ChatContextProvider({ children, cookies, location }) {
   };
 
   function fetchChats(category, language, limit = chatLimit) {
-    callfetch(
+    callFetch(
       "GET",
       location.base +
         "/api/chat?category=" +
@@ -122,6 +123,22 @@ export default function ChatContextProvider({ children, cookies, location }) {
     updateChats(tchats);
   }
 
+  //get users custom feed if already logged in
+  async function updateUserFeed() {
+    if (cookies.telegramUser) {
+      let response = await fetch(
+        location.base + "/api/feed?telegramUser=" + cookies.telegramUser,
+        {
+          method: "GET",
+          headers: { Accept: "*/*" },
+        }
+      );
+
+      let data = await response.json();
+      if (data.ok) setUserFeed(data.feeds);
+    }
+  }
+
   return (
     <ChatContext.Provider
       value={{
@@ -137,6 +154,8 @@ export default function ChatContextProvider({ children, cookies, location }) {
         exclusionList,
         updateExclusionList,
         chatLimit,
+        userFeeds,
+        updateUserFeed,
       }}
     >
       {children}

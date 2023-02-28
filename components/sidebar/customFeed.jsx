@@ -1,3 +1,4 @@
+import { ChatContext } from "@/context/ChatContextProvider";
 import { GlobalContext } from "@/context/GlobalContext";
 import CopySvg from "@/svg/copySvg";
 import Script from "next/script";
@@ -5,10 +6,10 @@ import { useContext, useEffect, useState } from "react";
 
 export default function CustomFeed() {
   const { cookies, location } = useContext(GlobalContext);
-  const [userFeeds, setUserFeed] = useState([]);
+  const { userFeeds, updateUserFeed } = useContext(ChatContext);
 
   useEffect(() => {
-    getUserFeeds();
+    updateUserFeed();
 
     const script = document.createElement("script");
     script.src = "https://telegram.org/js/telegram-widget.js?21";
@@ -19,22 +20,6 @@ export default function CustomFeed() {
     script.setAttribute("data-request-access", "write");
     document.querySelector("div#telegramLogin").appendChild(script);
   }, []);
-
-  //get users custom feed if already logged in
-  async function getUserFeeds() {
-    if (cookies.telegramUser) {
-      let response = await fetch(
-        location.base + "/api/feed?telegramUser=" + cookies.telegramUser,
-        {
-          method: "GET",
-          headers: { Accept: "*/*" },
-        }
-      );
-
-      let data = await response.json();
-      if (data.ok) setUserFeed(data.feeds);
-    }
-  }
 
   return (
     <>

@@ -62,7 +62,10 @@ export default async function feed(req, res) {
       });
     }
 
-    //add feed to db
+    //filter & add feed to db
+    req.body.chats.map((chat, i) => {
+      req.body.chats[i] = chat.trim();
+    });
     result = await threej.query(
       "INSERT INTO ?? (NAME, DESCRIPTION, CHATS, CREATOR) VALUES(?)",
       [
