@@ -1,1 +1,2 @@
-Telegram Broswer lets you browse public telegram without login to your account
+# Telegram Broswer 
+### Browse public telegram channels as feed
