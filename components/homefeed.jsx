@@ -1,62 +1,60 @@
 import { ChatContext } from "@/context/ChatContextProvider";
 import { GlobalContext } from "@/context/GlobalContext";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import Button from "./button";
 import NewCustomFeed from "./sidebar/newCustomFeed";
 
 export default function HomeFeed() {
-  let scrollPos = 0;
+  const [didScroll, setDidScroll] = useState(false);
   const chatContext = useContext(ChatContext);
   const { darkMode, cookies, location } = useContext(GlobalContext);
 
   useEffect(() => {
     document.querySelector("div#feed").innerHTML = "";
-    if (location.href.match("/feed/")) {
+    if (location.href.includes("/feed/")) {
       const q = new URLSearchParams(window.location.search);
       chatContext.fetchCustomFeed(q.get("id"));
     } else {
       chatContext.fetchChats(cookies.chatCategory, cookies.chatLanguage);
     }
+    window.addEventListener("scroll", () => {
+      setDidScroll(true);
+    });
   }, []);
 
-  useEffect(() => {
-    const handleScrollEffects = () => {
-      let main = document.querySelector("main").getBoundingClientRect();
-      if (Math.abs(main.top - scrollPos) > 200) {
+  //handle scroll effects
+  setTimeout(() => {
+    if (didScroll) {
+      setDidScroll(false);
+
+      //update chat details card
+      document.querySelectorAll("div#feed div").forEach((div) => {
+        if (
+          div.getBoundingClientRect().top > -100 &&
+          div.getBoundingClientRect().top < 250
+        ) {
+          const username = div.getAttribute("data-username") || "";
+          if (chatContext.currentChat.username != username) {
+            chatContext.chats.map((chat) => {
+              if (username == chat.username) chatContext.setCurrentChat(chat);
+            });
+          }
+        }
+      });
+
+      //load more posts
+      if (
+        window.innerHeight + document.documentElement.scrollTop + 10 >
+        document.documentElement.scrollHeight
+      ) {
+        chatContext.modifyChatsState();
         //remove redundant div from feed
         document
           .querySelectorAll("div#feed div script:only-child")
           .forEach((el) => el.parentNode.remove());
-
-        //update chat details card
-        document.querySelectorAll("div#feed div").forEach((div) => {
-          if (
-            div.getBoundingClientRect().top > -100 &&
-            div.getBoundingClientRect().top < 250
-          ) {
-            const username = div.getAttribute("data-username") || "";
-            if (chatContext.currentChat.username != username) {
-              chatContext.chats.map((chat) => {
-                if (username == chat.username) chatContext.setCurrentChat(chat);
-              });
-            }
-          }
-        });
-
-        //load more posts
-        const lastPost = document.querySelector("div#feed div:last-child");
-        if (lastPost) {
-          const lastPostPos = lastPost.getBoundingClientRect();
-          if (lastPostPos.top < 1000) {
-            chatContext.modifyChatsState();
-          }
-        }
-
-        scrollPos = main.top;
       }
-    };
-    window.addEventListener("scroll", handleScrollEffects);
-  }, [chatContext.chats]);
+    }
+  }, 250);
 
   /**
    *

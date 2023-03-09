@@ -21,6 +21,8 @@ export default function LeftSidebar() {
   const [chatLimit, setChatLimit] = useState(cookies.chatLimit || 20);
 
   const updateFeed = () => {
+    if (location.href.includes("/feed/")) return;
+
     window.scrollTo(0, 0);
     document.querySelector("div#feed").innerHTML = "";
     document.querySelector("div#chatDetailsCard h3").innerText = "";
@@ -56,7 +58,7 @@ export default function LeftSidebar() {
     );
   }
   function Filters() {
-    if (location.href.match("/feed/")) return "";
+    if (location.href.includes("/feed/")) return "";
     return (
       <ul className="flex flex-col gap-5 mt-10 sm:mt-0 sm:gap-3 text-sm">
         <p className="pl-1 text-sm opacity-100 text-gray-500">Filters</p>
@@ -130,7 +132,7 @@ export default function LeftSidebar() {
             </li>
             <li>
               {/* customlist section */}
-              {location.href.match("/feed/") ? "" : <CustomFeed />}
+              {location.href.includes("/feed/") ? "" : <CustomFeed />}
             </li>
           </ul>
         </div>
